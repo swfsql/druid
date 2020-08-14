@@ -77,16 +77,14 @@ fn ui_builder() -> impl Widget<AppData> {
         1.0,
     );
 
+    let label =
+        Label::new(|(_, item): &(Vector<u32>, u32), _env: &_| format!("List item #{}", item));
+
     // Build a list with shared data
     lists.add_flex_child(
         Scroll::new(List::new(|| {
             Flex::row()
-                .with_child(
-                    Label::new(|(_, item): &(Vector<u32>, u32), _env: &_| {
-                        format!("List item #{}", item)
-                    })
-                    .align_vertical(UnitPoint::LEFT),
-                )
+                .with_child(label.align_vertical(UnitPoint::LEFT))
                 .with_flex_spacer(1.0)
                 .with_child(
                     Button::new("Delete")
