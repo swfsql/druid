@@ -151,11 +151,12 @@ impl WindowState {
 
 fn setup_mouse_down_callback(ws: &Rc<WindowState>) {
     let state = ws.clone();
+    let dpr = ws.window.device_pixel_ratio();
     register_canvas_event_listener(ws, "mousedown", move |event: web_sys::MouseEvent| {
         if let Some(button) = mouse_button(event.button()) {
             let buttons = mouse_buttons(event.buttons());
             let event = MouseEvent {
-                pos: Point::new(event.offset_x() as f64, event.offset_y() as f64),
+                pos: Point::new(event.offset_x() as f64 / dpr, event.offset_y() as f64 / dpr),
                 buttons,
                 mods: get_modifiers!(event),
                 count: 1,
@@ -170,11 +171,12 @@ fn setup_mouse_down_callback(ws: &Rc<WindowState>) {
 
 fn setup_mouse_up_callback(ws: &Rc<WindowState>) {
     let state = ws.clone();
+    let dpr = ws.window.device_pixel_ratio();
     register_canvas_event_listener(ws, "mouseup", move |event: web_sys::MouseEvent| {
         if let Some(button) = mouse_button(event.button()) {
             let buttons = mouse_buttons(event.buttons());
             let event = MouseEvent {
-                pos: Point::new(event.offset_x() as f64, event.offset_y() as f64),
+                pos: Point::new(event.offset_x() as f64 / dpr, event.offset_y() as f64 / dpr),
                 buttons,
                 mods: get_modifiers!(event),
                 count: 0,
@@ -189,10 +191,11 @@ fn setup_mouse_up_callback(ws: &Rc<WindowState>) {
 
 fn setup_mouse_move_callback(ws: &Rc<WindowState>) {
     let state = ws.clone();
+    let dpr = ws.window.device_pixel_ratio();
     register_canvas_event_listener(ws, "mousemove", move |event: web_sys::MouseEvent| {
         let buttons = mouse_buttons(event.buttons());
         let event = MouseEvent {
-            pos: Point::new(event.offset_x() as f64, event.offset_y() as f64),
+            pos: Point::new(event.offset_x() as f64 / dpr, event.offset_y() as f64 / dpr),
             buttons,
             mods: get_modifiers!(event),
             count: 0,
@@ -206,6 +209,7 @@ fn setup_mouse_move_callback(ws: &Rc<WindowState>) {
 
 fn setup_scroll_callback(ws: &Rc<WindowState>) {
     let state = ws.clone();
+    let dpr = ws.window.device_pixel_ratio();
     register_canvas_event_listener(ws, "wheel", move |event: web_sys::WheelEvent| {
         let delta_mode = event.delta_mode();
 
@@ -227,7 +231,7 @@ fn setup_scroll_callback(ws: &Rc<WindowState>) {
         };
 
         let event = MouseEvent {
-            pos: Point::new(event.offset_x() as f64, event.offset_y() as f64),
+            pos: Point::new(event.offset_x() as f64 / dpr, event.offset_y() as f64 / dpr),
             buttons: mouse_buttons(event.buttons()),
             mods: get_modifiers!(event),
             count: 0,
