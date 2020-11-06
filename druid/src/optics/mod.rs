@@ -14,3 +14,5 @@ pub use prism::{DefaultUpgrade, PartialPrism, Prism, PrismExt};
 
 #[allow(clippy::module_inception)]
 pub mod affine_traversal;
+
+pub mod traversal;
